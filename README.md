@@ -15,7 +15,7 @@ A quick and dirty tool for gathering info about the sizing and performance of an
 
 ## Events per second (eps)
 
-Best we can do, I think, is poll `/rest/api/v2/events/count` a few times and measure the delta.
+Best we can do, I think, is poll `/api/v2/events/count` or `/rest/events/count` a few times and measure the delta.
 
 ## Metrics persisted per second (mps)
 
