@@ -13,29 +13,29 @@ A quick and dirty tool for gathering info about the sizing and performance of an
 * Count of Minions (mnc)
 
 
-## Events per second (eps)
+## Events per second (eventsPerSec)
 
-Best we can do, I think, is poll `/api/v2/events/count` or `/rest/events/count` a few times and measure the delta.
+Best we can do, I think, is poll `/api/v2/events?limit=1` or `/rest/events?limit=1` a few times and measure the delta between the event IDs of the singular events returned.
 
-## Metrics persisted per second (mps)
+## Metrics persisted per second (metricsPerSec)
 
 Where JMX self-monitoring is enabled, we can get a feel for this item by looking at the collected data for one of two MBean properties.
 
 On instances persisting timeseries data to Newts, use `NewtsSmplsInsertd`. For RRD instances, use `ONMSQueUpdates`.
 
-## Polls per second (pps)
+## Polls per second (pollsPerSec)
 
 Where JMX self-monitoring is enabled, use `ONMSPollCount`.
 
-## Flows persisted per second (fps)
+## Flows persisted per second (flowsPerSec)
 
 Where JMX self-monitoring is enabled, use `FlowPerst5m`.
 
-## Count of monitoring locations (loc)
+## Count of monitoring locations (monitoringLocationCount)
 
 Use `/api/v2/monitoringLocations` or `/rest/monitoringLocations`, value of top-level `count` key (using `/count` in URL seems broken)
 
-## Count of Minions (mnc)
+## Count of Minions (minionCount)
 
 Easy, just ask for `/api/v2/minions/count` or `/rest/minions/count` where API v2 is missing.
 
