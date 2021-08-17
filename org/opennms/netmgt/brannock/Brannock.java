@@ -64,8 +64,7 @@ public class Brannock {
         addAttribute("OpenNMS:Name=Queued", "CreatesCompleted", "DequeuedItems", "DequeuedOperations", "ElapsedTime", "EnqueuedOperations", "Errors", "PromotionCount", "SignificantOpsCompleted", "SignificantOpsDequeued", "SignificantOpsEnqueued", "StartTime", "TotalOperationsPending", "UpdatesCompleted");
         addAttribute("org.opennms.newts:name=repository.samples-inserted", "Count", "FifteenMinuteRate", "FiveMinuteRate", "MeanRate", "OneMinuteRate", "RateUnit");
         addAttribute("OpenNMS:Name=Pollerd", "ActiveThreads", "CorePoolThreads", "MaxPoolThreads", "NumPolls", "NumPoolThreads", "PeakPoolThreads", "TaskCompletionRatio", "TaskQueuePendingCount", "TaskQueueRemainingCapacity", "TasksCompleted", "TasksTotal");
-        
-        
+        addAttribute("org.opennms.netmgt.flows:name=flowsPersisted", "Count", "FifteenMinuteRate", "FiveMinuteRate", "MeanRate", "OneMinuteRate", "RateUnit");
         
         m_jsOut.put("jmxData", m_jsJmxData);
         System.out.println(m_jsOut.toString());
