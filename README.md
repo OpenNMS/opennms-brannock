@@ -16,5 +16,5 @@ Going to do all these things via JMX through the local MBeanServer.
 
 It's not Mavenized yet, so:
 
- javac -cp $HOME/.m2/repository/org/json/json/20200518/json-20200518.jar org/opennms/netmgt/brannock/Brannock.java
- java -cp .:$HOME/.m2/repository/org/json/json/20200518/json-20200518.jar  org.opennms.netmgt.brannock.Brannock | jq .
+ `javac -cp $HOME/.m2/repository/org/json/json/20200518/json-20200518.jar org/opennms/netmgt/brannock/Brannock.java`
+ `java -cp .:$HOME/.m2/repository/org/json/json/20200518/json-20200518.jar  org.opennms.netmgt.brannock.Brannock | jq .`
