@@ -83,7 +83,7 @@ public class Brannock implements BundleActivator {
             }
             m_jsJmxData.put(objectName, objJSON);
         } catch (Throwable t) {
-            System.err.println("Oops: " + t.getMessage());
+            // gulp
         }
     }
     
