@@ -65,7 +65,7 @@ public class Brannock implements BundleActivator {
         addAttribute("org.opennms.netmgt.flows:name=flowsPersisted", "Count", "FifteenMinuteRate", "FiveMinuteRate", "MeanRate", "OneMinuteRate", "RateUnit");
         
         m_jsOut.put("jmxData", m_jsJmxData);
-        writeData(m_jsOut.toString());
+        writeData(m_jsOut.toString(2));
     }
     
     @Override
@@ -88,7 +88,7 @@ public class Brannock implements BundleActivator {
     }
     
     private void writeData(String data) throws IOException {
-        String fileName = System.getenv("OPENNMS_HOME") + "/logs/brannock_stats.txt";
+        String fileName = System.getenv("OPENNMS_HOME") + "/logs/brannock_stats.json";
         File file = new File(fileName);
         if (!file.exists()) {
             file.createNewFile();
