@@ -72,8 +72,7 @@ public class Brannock {
             JSONObject objJSON = new JSONObject();
             for (String anAttributeName : attributeNames) {
                 Object attrObj = m_mbeanServer.getAttribute(objNameActual, anAttributeName);
-                JSONObject attrJSON = new JSONObject().put(anAttributeName, attrObj.toString());
-                objJSON.put(objectName, attrJSON);
+                objJSON.put(anAttributeName, attrObj.toString());
             }
             m_jsJmxData.put(objectName, objJSON);
         } catch (Throwable t) {
