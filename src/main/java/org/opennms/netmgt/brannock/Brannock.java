@@ -34,10 +34,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.management.Attribute;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
@@ -46,7 +43,6 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 public class Brannock implements BundleActivator {
-    private List<Attribute> m_targetAttributes;
     private MBeanServer m_mbeanServer;
     private JSONObject m_jsOut;
     private JSONObject m_jsJmxData;
@@ -54,7 +50,6 @@ public class Brannock implements BundleActivator {
     @Override
     public void start(BundleContext bundleContext) throws Exception {
         m_mbeanServer = ManagementFactory.getPlatformMBeanServer();
-        m_targetAttributes = new ArrayList<>();
         m_jsOut = new JSONObject();
         
         m_jsJmxData = new JSONObject();
