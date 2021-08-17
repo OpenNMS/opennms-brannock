@@ -17,7 +17,7 @@ A sample output follows.
       "CreatesCompleted": "0",
       "StartTime": "0",
       "DequeuedItems": "0",
-      "ElapsedTime": "1629243009115",
+      "ElapsedTime": "1629243514632",
       "SignificantOpsEnqueued": "0",
       "SignificantOpsDequeued": "0",
       "DequeuedOperations": "0",
@@ -29,59 +29,67 @@ A sample output follows.
       "UpdatesCompleted": "0"
     },
     "OpenNMS:Name=Pollerd": {
-      "ActiveThreads": "0",
-      "TaskCompletionRatio": "0.0",
+      "ActiveThreads": "1",
+      "TaskCompletionRatio": "0.9999995432571973",
       "CorePoolThreads": "30",
-      "PeakPoolThreads": "0",
-      "NumPoolThreads": "0",
+      "PeakPoolThreads": "30",
+      "NumPoolThreads": "30",
       "TaskQueuePendingCount": "0",
-      "TasksTotal": "0",
+      "TasksTotal": "2189416",
       "MaxPoolThreads": "30",
-      "TasksCompleted": "0",
-      "NumPolls": "0",
+      "TasksCompleted": "2189415",
+      "NumPolls": "2189416",
       "TaskQueueRemainingCapacity": "2147483647"
     },
     "org.opennms.netmgt.eventd:name=eventlogs.process": {
-      "75thPercentile": "0.260802",
-      "Mean": "0.2620121242533506",
-      "StdDev": "1.3791784643605132",
-      "98thPercentile": "0.37954",
+      "75thPercentile": "17.829575",
+      "Mean": "19.82412585742063",
+      "StdDev": "5.3137949086351215",
+      "98thPercentile": "24.773691",
       "RateUnit": "events/second",
-      "95thPercentile": "0.33522199999999996",
-      "99thPercentile": "0.5666169999999999",
-      "Max": "88.273313",
-      "Count": "56",
-      "FiveMinuteRate": "0.07943977930534188",
-      "50thPercentile": "0.21706999999999999",
-      "MeanRate": "0.11280741635919429",
-      "Min": "0.11429199999999999",
-      "OneMinuteRate": "0.13622650656889723",
+      "95thPercentile": "24.773691",
+      "99thPercentile": "48.929044999999995",
+      "Max": "339.6596",
+      "Count": "140964",
+      "FiveMinuteRate": "0.011125178727385715",
+      "50thPercentile": "17.829575",
+      "MeanRate": "0.03845734540163717",
+      "Min": "4.1572379999999995",
+      "OneMinuteRate": "0.007144365613377293",
       "DurationUnit": "milliseconds",
-      "999thPercentile": "2.1512",
-      "FifteenMinuteRate": "0.044937132063619975"
+      "999thPercentile": "67.752331",
+      "FifteenMinuteRate": "0.01071415077980683"
     },
     "org.opennms.netmgt.flows:name=flowsPersisted": {
       "RateUnit": "events/second",
-      "OneMinuteRate": "0.0",
-      "Count": "0",
-      "FifteenMinuteRate": "0.0",
-      "FiveMinuteRate": "0.0",
-      "MeanRate": "0.0"
+      "OneMinuteRate": "2.964393875E-314",
+      "Count": "1077946460",
+      "FifteenMinuteRate": "4.44659081257E-313",
+      "FiveMinuteRate": "1.4821969375E-313",
+      "MeanRate": "294.08404133231045"
+    },
+    "org.opennms.newts:name=repository.samples-inserted": {
+      "RateUnit": "events/second",
+      "OneMinuteRate": "238.5283472098449",
+      "Count": "813309259",
+      "FifteenMinuteRate": "232.90315844111245",
+      "FiveMinuteRate": "233.71845410848283",
+      "MeanRate": "221.88428832655137"
     },
     "java.lang:type=Runtime": {
-      "VmVendor": "Red Hat, Inc.",
-      "Uptime": "509747",
+      "VmVendor": "Amazon.com Inc.",
+      "Uptime": "3665481416",
       "VmName": "OpenJDK 64-Bit Server VM",
-      "StartTime": "1629242499374",
-      "VmVersion": "11.0.12+7-LTS",
-      "Name": "6338@meridian-2021-1-3"
+      "StartTime": "1625578033321",
+      "VmVersion": "11.0.10+9-LTS",
+      "Name": "16281@onmscore"
     },
     "java.lang:type=OperatingSystem": {
-      "Version": "3.10.0-1127.el7.x86_64",
+      "Version": "4.14.219-161.340.amzn2.x86_64",
       "AvailableProcessors": "2",
-      "OpenFileDescriptorCount": "1450",
+      "OpenFileDescriptorCount": "1825",
       "Name": "Linux",
-      "TotalPhysicalMemorySize": "1927102464"
+      "TotalPhysicalMemorySize": "8362287104"
     }
   }
 }
