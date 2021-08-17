@@ -19,7 +19,7 @@
                         <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Bundle-Version>${project.version}</Bundle-Version>
-                        <Bundle-Activator>org.opennms.mbean.stats.MBeanStatsCollector</Bundle-Activator>
+                        <Bundle-Activator>org.opennms.netmgt.brannock.Brannock</Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>
