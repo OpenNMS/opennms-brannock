@@ -60,7 +60,12 @@ public class Brannock {
 
         addAttribute("java.lang:type=Runtime", "Name", "StartTime", "Uptime", "VmName", "VmVendor", "VmVersion");
         addAttribute("java.lang:type=OperatingSystem", "AvailableProcessors", "Name", "OpenFileDescriptorCount", "TotalPhysicalMemorySize", "Version");
-//        addAttribute("org.opennms.netmgt.eventd:name=eventlogs.process", "Mean");        
+        addAttribute("org.opennms.netmgt.eventd:name=eventlogs.process", "50thPercentile", "75thPercentile", "95thPercentile", "98thPercentile", "99thPercentile", "999thPercentile", "Count", "DurationUnit", "FifteenMinuteRate", "FiveMinuteRate", "Max", "Mean", "MeanRate", "MeanRate", "Min", "OneMinuteRate", "RateUnit", "StdDev");
+        addAttribute("OpenNMS:Name=Queued", "CreatesCompleted", "DequeuedItems", "DequeuedOperations", "ElapsedTime", "EnqueuedOperations", "Errors", "PromotionCount", "SignificantOpsCompleted", "SignificantOpsDequeued", "SignificantOpsEnqueued", "StartTime", "TotalOperationsPending", "UpdatesCompleted");
+        addAttribute("org.opennms.newts:name=repository.samples-inserted", "Count", "FifteenMinuteRate", "FiveMinuteRate", "MeanRate", "OneMinuteRate", "RateUnit");
+        addAttribute("OpenNMS:Name=Pollerd", "ActiveThreads", "CorePoolThreads", "MaxPoolThreads", "NumPolls", "NumPoolThreads", "PeakPoolThreads", "TaskCompletionRatio", "TaskQueuePendingCount", "TaskQueueRemainingCapacity", "TasksCompleted", "TasksTotal");
+        
+        
         
         m_jsOut.put("jmxData", m_jsJmxData);
         System.out.println(m_jsOut.toString());
