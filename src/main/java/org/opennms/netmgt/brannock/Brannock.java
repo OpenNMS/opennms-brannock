@@ -28,6 +28,11 @@
 
 package org.opennms.netmgt.brannock;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +42,17 @@ import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
 import org.json.JSONObject;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
 
-public class Brannock {
+public class Brannock implements BundleActivator {
     private List<Attribute> m_targetAttributes;
     private MBeanServer m_mbeanServer;
     private JSONObject m_jsOut;
     private JSONObject m_jsJmxData;
     
-    public static void main(String[] args) {
-        Brannock brannock = new Brannock();
-        brannock.start();
-    }
-    
-    public void start() {
+    @Override
+    public void start(BundleContext bundleContext) throws Exception {
         m_mbeanServer = ManagementFactory.getPlatformMBeanServer();
         m_targetAttributes = new ArrayList<>();
         m_jsOut = new JSONObject();
@@ -67,7 +70,12 @@ public class Brannock {
         addAttribute("org.opennms.netmgt.flows:name=flowsPersisted", "Count", "FifteenMinuteRate", "FiveMinuteRate", "MeanRate", "OneMinuteRate", "RateUnit");
         
         m_jsOut.put("jmxData", m_jsJmxData);
-        System.out.println(m_jsOut.toString());
+        writeData(m_jsOut.toString());
+    }
+    
+    @Override
+    public void stop(BundleContext bundleContext) throws Exception {
+        
     }
     
     private void addAttribute(String objectName, String... attributeNames) {
@@ -84,4 +92,15 @@ public class Brannock {
         }
     }
     
+    private void writeData(String data) throws IOException {
+        String fileName = System.getenv("OPENNMS_HOME") + "/logs/brannock_stats.txt";
+        File file = new File(fileName);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+        FileWriter writer = new FileWriter(file, true);
+        Writer output = new BufferedWriter(writer);
+        output.append(data);
+        output.close();
+    }
 }
