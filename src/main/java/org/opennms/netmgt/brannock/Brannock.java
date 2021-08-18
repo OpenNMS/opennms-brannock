@@ -44,6 +44,7 @@ import javax.management.ObjectName;
 import javax.management.ReflectionException;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -53,6 +54,9 @@ public class Brannock implements BundleActivator {
     private JSONObject m_jsOut;
     private JSONObject m_jsJmxData;
     private JSONObject m_jsJdbcData;
+    private JSONObject m_jsDerivedData;
+    private Long m_vmUptime, m_pollerTasksCompleted, m_enqueuedOps;
+    private Double m_newtsSamplesInsertedMeanRate, m_eventLogsProcessMeanRate, m_flowsPersistedMeanRate;
     
     @Override
     public void start(BundleContext bundleContext) throws Exception {
@@ -60,6 +64,7 @@ public class Brannock implements BundleActivator {
         m_jsOut = new JSONObject();
         m_jsJmxData = new JSONObject();
         m_jsJdbcData = new JSONObject();
+        m_jsDerivedData = new JSONObject();
         
         m_jsOut.put("brannockVersion", "v1");
         m_jsOut.put("startupTime", System.currentTimeMillis());
@@ -71,6 +76,7 @@ public class Brannock implements BundleActivator {
         
         m_jsOut.put("jmxData", m_jsJmxData);
         m_jsOut.put("jdbcData", m_jsJdbcData);
+        m_jsOut.put("derivedData", m_jsDerivedData);
         m_jsOut.put("finishTime", System.currentTimeMillis());
         writeData(m_jsOut.toString(2));
     }
@@ -96,7 +102,49 @@ public class Brannock implements BundleActivator {
     }
     
     private void doDerivedValues() {
+        try {
+            m_vmUptime = m_jsJmxData.getJSONObject("java.lang:type=Runtime").getLong("Uptime");
+            m_pollerTasksCompleted = m_jsJmxData.getJSONObject("OpenNMS:Name=Pollerd").getLong("TasksCompleted");
+            m_enqueuedOps = m_jsJmxData.getJSONObject("OpenNMS:Name=Queued").getLong("EnqueuedOperations");
+            m_newtsSamplesInsertedMeanRate = m_jsJmxData.getJSONObject("org.opennms.newts:name=repository.samples-inserted").getDouble("MeanRate");
+            m_eventLogsProcessMeanRate = m_jsJmxData.getJSONObject("org.opennms.netmgt.eventd:name=eventlogs.process").getDouble("MeanRate");
+            m_flowsPersistedMeanRate = m_jsJmxData.getJSONObject("org.opennms.netmgt.flows:name=flowsPersisted").getDouble("MeanRate");
+        } catch (JSONException je) {
+            accumulateThrowable(je);
+        }
         
+        addDerivedValue("metricsPersistedPerSec", deriveMetricsPerSec());
+        addDerivedValue("pollsCompletedPerSec", derivePollsPerSec());
+    }
+    
+    private Double derivePollsPerSec() {
+        Double pps;
+        if (m_vmUptime != null &&
+                m_vmUptime != 0 &&
+                m_pollerTasksCompleted != null) {
+            pps = m_pollerTasksCompleted / m_vmUptime / 1000.0;
+        } else {
+            pps = Double.MIN_VALUE;
+        }
+        return pps;
+    }
+    
+    private Double deriveMetricsPerSec() {
+        Double mps;
+        if (m_newtsSamplesInsertedMeanRate != null &&
+                m_newtsSamplesInsertedMeanRate != Double.NaN && 
+                m_newtsSamplesInsertedMeanRate > 0) {
+            mps = m_newtsSamplesInsertedMeanRate;
+        } else if (m_vmUptime != null &&
+                    m_enqueuedOps != null &&
+                    m_enqueuedOps > 0) {
+            mps = m_enqueuedOps / m_vmUptime / 1000.0;
+        } else if (m_enqueuedOps == 0) {
+            mps = new Double(0);
+        } else {
+            mps = Double.MIN_VALUE;
+        }
+        return mps;
     }
     
     private void addJmxAttribute(String objectName, String... attributeNames) {
@@ -124,6 +172,10 @@ public class Brannock implements BundleActivator {
     
     private void addJdbcAttribute(String query, String... columns) {
         // TODO actually do the queries
+    }
+    
+    private void addDerivedValue(String name, Object value) {
+        m_jsDerivedData.put(name, value);
     }
     
     private void accumulateThrowable(Throwable t) {
