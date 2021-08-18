@@ -117,7 +117,7 @@ public class Brannock implements BundleActivator {
                 accumulateThrowable(e);
                 continue;
             }
-            objJSON.put(anAttributeName, attrObj.toString());
+            objJSON.put(anAttributeName, attrObj);
         }
         m_jsJmxData.put(objectName, objJSON);
     }
