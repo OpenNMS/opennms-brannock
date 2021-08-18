@@ -34,6 +34,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.management.ManagementFactory;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.Arrays;
 
 import javax.management.AttributeNotFoundException;
 import javax.management.InstanceNotFoundException;
@@ -42,15 +48,18 @@ import javax.management.MBeanServer;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
+import javax.sql.DataSource;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 public class Brannock implements BundleActivator {
     private MBeanServer m_mbeanServer;
+    private DataSource m_jdbcDS;
     private JSONObject m_jsOut;
     private JSONObject m_jsJmxData;
     private JSONObject m_jsJdbcData;
@@ -61,6 +70,7 @@ public class Brannock implements BundleActivator {
     @Override
     public void start(BundleContext bundleContext) throws Exception {
         m_mbeanServer = ManagementFactory.getPlatformMBeanServer();
+        m_jdbcDS = getJdbcDataSource(bundleContext);
         m_jsOut = new JSONObject();
         m_jsJmxData = new JSONObject();
         m_jsJdbcData = new JSONObject();
@@ -96,7 +106,7 @@ public class Brannock implements BundleActivator {
         addJmxAttribute("org.opennms.netmgt.flows:name=flowsPersisted", "Count", "FifteenMinuteRate", "FiveMinuteRate", "MeanRate", "OneMinuteRate", "RateUnit");        
     }
     
-    private void doJdbcAttributes() {
+    private void doJdbcAttributes() throws SQLException {
         addJdbcAttribute("SELECT COUNT(*) AS monitoringLocationCount FROM monitoringlocations", "monitoringLocationCount");
         addJdbcAttribute("SELECT COUNT(*) AS minionCount FROM monitoringsystems WHERE type = 'Minion'", "minionCount");
     }
@@ -122,7 +132,7 @@ public class Brannock implements BundleActivator {
         if (m_vmUptime != null &&
                 m_vmUptime != 0 &&
                 m_pollerTasksCompleted != null) {
-            pps = m_pollerTasksCompleted / m_vmUptime / 1000.0;
+            pps = m_pollerTasksCompleted.doubleValue() / m_vmUptime.doubleValue() / 1000.0;
         } else {
             pps = Double.MIN_VALUE;
         }
@@ -138,7 +148,7 @@ public class Brannock implements BundleActivator {
         } else if (m_vmUptime != null &&
                     m_enqueuedOps != null &&
                     m_enqueuedOps > 0) {
-            mps = m_enqueuedOps / m_vmUptime / 1000.0;
+            mps = m_enqueuedOps.doubleValue() / m_vmUptime.doubleValue() / 1000.0;
         } else if (m_enqueuedOps == 0) {
             mps = new Double(0);
         } else {
@@ -170,12 +180,29 @@ public class Brannock implements BundleActivator {
         m_jsJmxData.put(objectName, objJSON);
     }
     
-    private void addJdbcAttribute(String query, String... columns) {
-        // TODO actually do the queries
+    private void addJdbcAttribute(String query, String... columns) throws SQLException {
+        Connection conn = m_jdbcDS.getConnection();
+        PreparedStatement st = conn.prepareStatement(query);
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            for (String aColumn: columns) {
+                long aValue = rs.getInt(aColumn);
+                m_jsJdbcData.put(aColumn, aValue);
+            }
+        }
     }
     
     private void addDerivedValue(String name, Object value) {
         m_jsDerivedData.put(name, value);
+    }
+    
+    private DataSource getJdbcDataSource(BundleContext context) {
+        Class<DataSource> type = DataSource.class;
+        ServiceReference<DataSource> ref = context.getServiceReference(type);
+        if(ref != null) {
+            return context.getService(ref);
+        }
+        return null;
     }
     
     private void accumulateThrowable(Throwable t) {
