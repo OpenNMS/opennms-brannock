@@ -214,7 +214,11 @@ public class Brannock implements BundleActivator {
     }
     
     private void writeData(String data) throws IOException {
-        String fileName = System.getenv("OPENNMS_HOME") + "/logs/brannock_stats.json";
+        String onmsHome = System.getenv("OPENNMS_HOME");
+        if (onmsHome == null || "".equals(onmsHome) ) {
+            onmsHome = "/opt/opennms"; // TODO: debian exists
+        }
+        String fileName = onmsHome + "/logs/brannock_stats.json";
         File file = new File(fileName);
         if (!file.exists()) {
             file.createNewFile();
