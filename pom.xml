@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.opennms.tools</groupId>
     <artifactId>brannock</artifactId>
-    <version>1.3</version>
+    <version>1.4-SNAPSHOT</version>
     <name>OpenNMS Features Brannock</name>
     <packaging>bundle</packaging>
     <build>
