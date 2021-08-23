@@ -132,7 +132,7 @@ public class Brannock implements BundleActivator {
         if (m_vmUptime != null &&
                 m_vmUptime != 0 &&
                 m_pollerTasksCompleted != null) {
-            pps = m_pollerTasksCompleted.doubleValue() / m_vmUptime.doubleValue() / 1000.0;
+            pps = m_pollerTasksCompleted.doubleValue() * 1000.0 / m_vmUptime.doubleValue();
         } else {
             pps = Double.MIN_VALUE;
         }
@@ -148,7 +148,7 @@ public class Brannock implements BundleActivator {
         } else if (m_vmUptime != null &&
                     m_enqueuedOps != null &&
                     m_enqueuedOps > 0) {
-            mps = m_enqueuedOps.doubleValue() / m_vmUptime.doubleValue() / 1000.0;
+            mps = m_enqueuedOps.doubleValue() * 1000.0 / m_vmUptime.doubleValue();
         } else if (m_enqueuedOps == 0) {
             mps = new Double(0);
         } else {
