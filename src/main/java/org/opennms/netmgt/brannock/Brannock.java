@@ -109,6 +109,13 @@ public class Brannock implements BundleActivator {
     private void doJdbcAttributes() throws SQLException {
         addJdbcAttribute("SELECT COUNT(*) AS monitoringLocationCount FROM monitoringlocations", "monitoringLocationCount");
         addJdbcAttribute("SELECT COUNT(*) AS minionCount FROM monitoringsystems WHERE type = 'Minion'", "minionCount");
+        addJdbcAttribute("SELECT COUNT(*) AS nodeCount FROM node", "nodeCount");
+        addJdbcAttribute("SELECT COUNT(distinct foreignsource) AS fsCount FROM node", "fsCount");
+        addJdbcAttribute("SELECT COUNT(*) AS totalIPCount FROM ipinterface", "totalIPCount");
+        addJdbcAttribute("SELECT COUNT(*) AS managedIPCount FROM ipinterface WHERE ismanaged = 'M'", "managedIPCount");
+        addJdbcAttribute("SELECT COUNT(*) AS totalSnmpCount FROM snmpinterface", "totalSnmpCount");
+        addJdbcAttribute("SELECT COUNT(*) AS collectSnmpCount FROM snmpinterface WHERE snmpcollect = 'C'", "collectSnmpCount");
+        addJdbcAttribute("SELECT COUNT(*) AS serviceCount FROM ifservices", "serviceCount");
     }
     
     private void doDerivedValues() {
